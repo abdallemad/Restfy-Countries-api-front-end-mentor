@@ -34,7 +34,7 @@ Users should be able to:
 
 ### Screenshot
 
-![](./screenshot.jpg)
+![my solution](./public/my-solution.png)
 
 Add a screenshot of your solution. The easiest way to do this is to use Firefox to view your project, right-click the page and select "Take a Screenshot". You can choose either a full-height screenshot or a cropped one based on how long the page is. If it's very long, it might be best to crop it.
 
@@ -46,10 +46,17 @@ Then crop/optimize/edit your image however you like, add it to your project, and
 
 ### Links
 
-- Solution URL: [Add solution URL here](https://your-solution-url.com)
-- Live Site URL: [Add live site URL here](https://your-live-site-url.com)
+- Solution URL: [Add solution URL here](https://github.com/abdallemad/Restfy-Countries-api-front-end-mentor)
+- Live Site URL: [Add live site URL here](https://restfy-countries-api.vercel.app/)
 
 ## My process
+
+1. first build a structure for the entier app 
+2. structure the component
+3. grab the data from the api 
+3. add filter options with the searchparams
+4. add loading skeletons 
+5. add cach with react-query by using queryKeys
 
 ### Built with
 
@@ -64,27 +71,34 @@ Then crop/optimize/edit your image however you like, add it to your project, and
 ### What I learned
 
 - learned to use Debouncing with React query and Next.js
-- learned to use 
+- learned to use react-query for cach the result 
+- learn to use server actions with next.js to filter the results by name to enhance the performance
 
 To see how you can add code snippets, see below:
 
-```html
-<h1>Some HTML code I'm proud of</h1>
-```
-```css
-.proud-of-this-css {
-  color: papayawhip;
+```jsx
+function useGetAllCountries() {
+  const searchparams = useSearchParams();
+  const name = searchparams.get("q") || "";
+  const region = searchparams.get("region") || "";
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["countries", `${region || "america"}`, name],
+    queryFn: async () => {
+      try {
+        const  data  = await getAllCountries({ name, region });
+        return data
+      } catch (error) {
+        throw new Error("Error fetching countries");
+      }
+    },
+  });
+  return {
+    data,
+    isLoading,
+    isError,
+  };
 }
 ```
-```js
-const proudOfThisFunc = () => {
-  console.log('🎉')
-}
-```
-
-If you want more help with writing markdown, we'd recommend checking out [The Markdown Guide](https://www.markdownguide.org/) to learn more.
-
-**Note: Delete this note and the content within this section and replace with your own learnings.**
 
 ### Continued development
 
@@ -94,21 +108,16 @@ Use this section to outline areas that you want to continue focusing on in futur
 
 ### Useful resources
 
-- [Example resource 1](https://www.example.com) - This helped me for XYZ reason. I really liked this pattern and will use it going forward.
-- [Example resource 2](https://www.example.com) - This is an amazing article which helped me finally understand XYZ. I'd recommend it to anyone still learning this concept.
-
-**Note: Delete this note and replace the list above with resources that helped you during the challenge. These could come in handy for anyone viewing your solution or for yourself when you look back on this project in the future.**
+- [Next.js](https://nextjs.org/docs) - Next.js Documentation
+- [Shadcn ui theme](https://ui.shadcn.com/docs/dark-mode/next) - for set up the dark theme easily 
 
 ## Author
 
-- Website - [Add your name here](https://www.your-site.com)
-- Frontend Mentor - [@yourusername](https://www.frontendmentor.io/profile/yourusername)
-- Twitter - [@yourusername](https://www.twitter.com/yourusername)
-
-**Note: Delete this note and add/remove/edit lines above based on what links you'd like to share.**
+- Website - [Abdalla Emad](https://abdallahemad.vercel.app)
+- Frontend Mentor - [@abdallaemad](https://www.frontendmentor.io/profile/abdallemad)
+- Linked In - [@abdallah-emad](https://www.linkedin.com/in/abdalla-emad-618b8b317/)
 
 ## Acknowledgments
 
 This is where you can give a hat tip to anyone who helped you out on this project. Perhaps you worked in a team or got some inspiration from someone else's solution. This is the perfect place to give them some credit.
 
-**Note: Delete this note and edit this section's content as necessary. If you completed this challenge by yourself, feel free to delete this section entirely.**
